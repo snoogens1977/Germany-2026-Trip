@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#142b3b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Germany Trip">
+<title>Germany Trip 2026</title>
+
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f1f5f8;
+    color: #1b3342;
+  }
+  header {
+    background: #142b3b;
+    color: white;
+    padding: 24px 16px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { margin: 0 0 5px; font-size: 23px; }
+  header p { margin: 0; font-size: 13px; color: #c4d8e4; }
+  nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 7px;
+    padding-top: 16px;
+  }
+  nav a {
+    padding: 8px 11px;
+    border: 1px solid #7190a2;
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  main { padding: 12px; max-width: 680px; margin: auto; }
+  article {
+    background: white;
+    padding: 17px;
+    margin-bottom: 13px;
+    border-radius: 15px;
+    box-shadow: 0 2px 9px #0000000c;
+    scroll-margin-top: 140px;
+  }
+  .date {
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .route { font-size: 14px; color: #405b6c; }
+  .driving { font-size: 12px; color: #647b89; margin-top: 7px; }
+  .activities { font-size: 14px; line-height: 1.55; }
+  .hotel {
+    padding: 12px 0;
+    border-top: 1px solid #e5eaee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .hotel strong { font-size: 14px; }
+  .hotel small { display: block; color: #687d89; margin-top: 4px; }
+  .go {
+    display: inline-block;
+    background: #087e90;
+    color: white;
+    border-radius: 10px;
+    padding: 12px 17px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13px;
+    min-width: 56px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .full {
+    display: block;
+    margin: 10px 0;
+    background: #193c57;
+  }
+  .stop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #edf0f2;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .train {
+    background: #e8f5f7;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 12px 0;
+  }
+  details { margin-top: 12px; }
+  summary { cursor: pointer; font-size: 14px; font-weight: 700; }
+  footer { padding: 12px; color: #697d88; font-size: 12px; line-height: 1.6; }
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🎄 Germany Trip 2026</h1>
+  <p>December 21–31 · Family Christmas Road Trip</p>
+  <nav id="navigation"></nav>
+</header>
+
+<main id="itinerary"></main>
+
+<script>
+const hotels = {
+  munich: {
+    name: "Hampton Munich City Center East",
+    address: "Hermann-Weinhauser-Straße 71, Munich, Germany"
+  },
+  nuremberg: {
+    name: "Hampton Nuremberg City Centre",
+    address: "Bahnhofstraße 16, Nuremberg, Germany"
+  },
+  prague: {
+    name: "Best Western Hotel Moran",
+    address: "Na Moráni 15, Prague, Czechia"
+  },
+  augsburg: {
+    name: "Holiday Inn Express Augsburg",
+    address: "Nagahama-Allee 77, Augsburg, Germany"
+  },
+  fussen: {
+    name: "Best Western Plus Hotel Füssen",
+    address: "Augsburger Straße 18, Füssen, Germany"
+  },
+  telfs: {
+    name: "Harry's Home Telfs",
+    address: "Weißenbachgasse 21, Telfs, Austria"
+  },
+  freiburg: {
+    name: "Hampton by Hilton Freiburg",
+    address: "Zita-Kaiser-Straße 32, Freiburg im Breisgau, Germany"
+  },
+  airport: {
+    name: "Hampton Munich Airport South",
+    address: "Am Söldnermoos 2, Hallbergmoos, Germany"
+  }
+};
+
+// Google Maps destination lookup
+function map(place) {
+  return "https://www.google.com/maps/search/?api=1&query="
+    + encodeURIComponent(place);
+}
+
+// Google Maps driving route with intermediate stops
+function drive(stops) {
+  const origin = stops[0];
+  const destination = stops[stops.length - 1];
+  const waypoints = stops.slice(1, -1);
+
+  let url = "https://www.google.com/maps/dir/?api=1"
+    + "&origin=" + encodeURIComponent(origin)
+    + "&destination=" + encodeURIComponent(destination)
+    + "&travelmode=driving";
+
+  if (waypoints.length) {
+    url += "&waypoints=" +
+      waypoints.map(encodeURIComponent).join("%7C");
+  }
+  return url;
+}
+
+const days = [
+  {
+    date: "Dec 21", day: "Monday",
+    title: "Departure from Nashville",
+    from: "BNA", to: "Overnight flight",
+    activities: "Icelandair departure 5:30 PM. Connect through Keflavík (KEF).",
+    stops: []
+  },
+  {
+    date: "Dec 22", day: "Tuesday",
+    title: "Arrive in Munich",
+    from: "Munich Airport", to: "Munich",
+    driving: "40 km / 25 mi · 40–60 min",
+    activities: "Arrive 12:05 PM. Pick up SIXT rental SUV. Explore the Christmas market at Marienplatz.",
+    hotel: "munich",
+    stops: [
+      ["Munich Marienplatz Christmas Market", "Marienplatz, Munich, Germany"]
+    ]
+  },
+  {
+    date: "Dec 23", day: "Wednesday",
+    title: "Dachau and Nuremberg",
+    from: "Munich", to: "Nuremberg",
+    driving: "185 km / 115 mi · 2–3 hours",
+    activities: "Morning self-guided visit to Dachau Memorial (allow 3–4 hours). Continue to Nuremberg for the Christkindlesmarkt and dinner at Bratwursthäusle.",
+    hotel: "nuremberg",
+    stops: [
+      ["Dachau Memorial", "Dachau Concentration Camp Memorial Site"],
+      ["Nuremberg Christmas Market", "Hauptmarkt, Nuremberg, Germany"],
+      ["Bratwursthäusle Restaurant", "Rathausplatz 1, Nuremberg, Germany"]
+    ]
+  },
+  {
+    date: "Dec 24", day: "Thursday",
+    title: "Prague",
+    from: "Nuremberg", to: "Prague",
+    driving: "300 km / 186 mi · 3¼–4 hours",
+    activities: "Drive to Prague, check into Best Western Hotel Moran, then explore the historic Old Town on Christmas Eve.",
+    hotel: "prague",
+    stops: [
+      ["Prague Old Town Square", "Old Town Square, Prague, Czechia"]
+    ]
+  },
+  {
+    date: "Dec 25", day: "Friday",
+    title: "Christmas Day in Prague",
+    from: "Prague", to: "Prague",
+    activities: "Christmas markets at Old Town Square and Wenceslas Square. Optional Charles Bridge sightseeing.",
+    hotel: "prague",
+    stops: [
+      ["Old Town Square", "Old Town Square, Prague, Czechia"],
+      ["Wenceslas Square", "Wenceslas Square, Prague, Czechia"],
+      ["Charles Bridge", "Charles Bridge, Prague, Czechia"]
+    ]
+  },
+  {
+    date: "Dec 26", day: "Saturday",
+    title: "Rothenburg and Augsburg",
+    from: "Prague", to: "Augsburg",
+    activities: "Drive via Rothenburg ob der Tauber. Explore the medieval Old Town, then continue to your Augsburg hotel.",
+    hotel: "augsburg",
+    driving: "Long driving day · allow extra time for Rothenburg",
+    drivingRoute: [
+      hotels.prague.address,
+      "Rothenburg ob der Tauber, Germany",
+      hotels.augsburg.address
+    ],
+    stops: [
+      ["Rothenburg Old Town", "Marktplatz, Rothenburg ob der Tauber, Germany"]
+    ]
+  },
+  {
+    date: "Dec 27", day: "Sunday",
+    title: "Romantic Road and Füssen",
+    from: "Augsburg", to: "Füssen",
+    activities: "Romantic Road sightseeing, with possible stops at Dinkelsbühl or Nördlingen. Continue toward Füssen and the Neuschwanstein Castle area.",
+    hotel: "fussen",
+    driving: "Scenic driving · time depends on selected stops",
+    stops: [
+      ["Dinkelsbühl", "Dinkelsbühl, Germany"],
+      ["Nördlingen", "Nördlingen, Germany"],
+      ["Neuschwanstein Castle", "Neuschwanstein Castle, Schwangau, Germany"]
+    ]
+  },
+  {
+    date: "Dec 28", day: "Monday",
+    title: "Alpine Train and Telfs",
+    from: "Füssen", to: "Innsbruck → Telfs",
+    activities: "Drive to Innsbruck Hauptbahnhof for your booked Alpine train ride via Seefeld to Mittenwald and back. After the train excursion, drive to Telfs.",
+    hotel: "telfs",
+    train: "Outbound train: Innsbruck 10:38 AM → Mittenwald 11:35 AM. Confirm return time using your ticket.",
+    drivingRoute: [
+      hotels.fussen.address,
+      "Innsbruck Hauptbahnhof, Austria"
+    ],
+    stops: [
+      ["Innsbruck Train Station", "Innsbruck Hauptbahnhof, Austria"],
+      ["Station Parking Garage", "Bahnhof Parkgarage, Südtiroler Platz, Innsbruck, Austria"],
+      ["Mittenwald", "Mittenwald, Germany"]
+    ]
+  },
+  {
+    date: "Dec 29", day: "Tuesday",
+    title: "Swiss Alps and Colmar",
+    from: "Telfs", to: "Freiburg",
+    activities: "Scenic driving through Switzerland via Lucerne. Visit Colmar's Christmas market in France, then continue to your hotel in Freiburg.",
+    hotel: "freiburg",
+    driving: "Long scenic driving day · approximately 7–9 hours",
+    drivingRoute: [
+      hotels.telfs.address,
+      "Lucerne, Switzerland",
+      "Colmar, France",
+      hotels.freiburg.address
+    ],
+    stops: [
+      ["Lucerne", "Lucerne, Switzerland"],
+      ["Colmar Christmas Market", "Place des Dominicains, Colmar, France"]
+    ]
+  },
+  {
+    date: "Dec 30", day: "Wednesday",
+    title: "Black Forest to Munich",
+    from: "Freiburg", to: "Munich Airport area",
+    activities: "Scenic Black Forest drive with stops at Titisee and Triberg. Continue to your final overnight hotel in Hallbergmoos.",
+    hotel: "airport",
+    driving: "Scenic detour · allow most of the day",
+    drivingRoute: [
+      hotels.freiburg.address,
+      "Titisee-Neustadt, Germany",
+      "Triberg im Schwarzwald, Germany",
+      hotels.airport.address
+    ],
+    stops: [
+      ["Titisee Lake", "Titisee, Titisee-Neustadt, Germany"],
+      ["Triberg", "Triberg im Schwarzwald, Germany"]
+    ]
+  },
+  {
+    date: "Dec 31", day: "Thursday",
+    title: "Return Home",
+    from: "Munich", to: "Nashville",
+    activities: "Drive to Munich Airport and return the SIXT SUV. Flight departs MUC at 1:00 PM. Arrive BNA at 6:45 PM.",
+    stops: [
+      ["SIXT Rental Return", "SIXT Car Return, Munich Airport P6, Germany"],
+      ["Munich Airport", "Munich Airport, Germany"]
+    ]
+  }
+];
+
+function goButton(label, url, full = false) {
+  return `<a class="go ${full ? "full" : ""}"
+    href="${url}" target="_blank" rel="noopener">
+    ${label}
+  </a>`;
+}
+
+function render() {
+  document.getElementById("navigation").innerHTML =
+    days.map((d, i) =>
+      `<a href="#day${i}">${d.date}</a>`
+    ).join("");
+
+  document.getElementById("itinerary").innerHTML =
+    days.map((d, i) => {
+      let content = `
+        <article id="day${i}">
+          <div class="date">${d.date} · ${d.day}</div>
+          <div class="route"><strong>${d.title}</strong></div>
+          <div class="route">${d.from} → ${d.to}</div>
+          ${d.driving ? `<div class="driving">🚗 ${d.driving}</div>` : ""}
+          <p class="activities">${d.activities}</p>
+        `;
+
+      if (d.train) {
+        content += `<div class="train">🚆 <strong>Train excursion</strong><br>${d.train}</div>`;
+      }
+
+      if (d.drivingRoute) {
+        content += goButton(
+          d.date === "Dec 28"
+            ? "🚗 GO · Drive to Innsbruck Station"
+            : "🚗 GO · Full Scenic Driving Route",
+          drive(d.drivingRoute),
+          true
+        );
+      }
+
+      if (d.hotel) {
+        const hotel = hotels[d.hotel];
+        content += `
+          <div class="hotel">
+            <div>
+              <strong>🏨 ${hotel.name}</strong>
+              <small>${hotel.address}</small>
+            </div>
+            ${goButton("GO", map(hotel.address))}
+          </div>
+        `;
+      }
+
+      if (d.stops && d.stops.length) {
+        content += `
+          <details>
+            <summary>📍 Sightseeing Stops & Navigation</summary>
+        `;
+
+        d.stops.forEach(stop => {
+          content += `
+            <div class="stop">
+              <span>${stop[0]}</span>
+              ${goButton("GO", map(stop[1]))}
+            </div>
+          `;
+        });
+
+        content += `</details>`;
+      }
+
+      content += `</article>`;
+      return content;
+    }).join("");
+
+  document.getElementById("itinerary").innerHTML += `
+    <footer>
+      Driving times are estimates. Check winter road conditions,
+      attraction hours, and your train ticket.
+      Google Maps GO buttons require an internet connection.
+    </footer>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
