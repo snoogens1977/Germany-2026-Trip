@@ -4,77 +4,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#142b3b">
+<meta name="theme-color" content="#091525">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Germany Trip">
+
 <title>Germany Trip 2026</title>
 
 <style>
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  :root {
+    color-scheme: dark;
+
+    --bg: #091525;
+    --header: #0b2340;
+    --panel: #13243b;
+    --panel-hover: #192e49;
+    --border: #294360;
+
+    --text: #eaf3ff;
+    --muted: #a7bfd5;
+
+    --blue: #12a4ee;
+    --orange: #ff911d;
+    --gold: #ffb347;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg);
+  }
+
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f1f5f8;
-    color: #1b3342;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", Roboto, sans-serif;
+    background:
+      radial-gradient(
+        ellipse at 20% 0%,
+        rgba(18, 104, 194, 0.13),
+        transparent 45%
+      ),
+      var(--bg);
+    color: var(--text);
   }
+
+  /* HEADER */
+
   header {
-    background: #142b3b;
-    color: white;
-    padding: 24px 16px 14px;
+    background: var(--header);
+    color: var(--text);
+    padding: 20px 16px 14px;
     position: sticky;
     top: 0;
     z-index: 10;
+    border-bottom: 2px solid var(--orange);
+    box-shadow: 0 5px 20px rgba(0,0,0,.25);
   }
-  header h1 { margin: 0 0 5px; font-size: 23px; }
-  header p { margin: 0; font-size: 13px; color: #c4d8e4; }
+
+  header h1 {
+    margin: 0 0 5px;
+    font-size: 23px;
+    color: #ffffff;
+  }
+
+  header p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* DATE NAVIGATION */
+
   nav {
     display: flex;
     overflow-x: auto;
     gap: 7px;
     padding-top: 16px;
+    padding-bottom: 3px;
+    scrollbar-width: none;
   }
+
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+
   nav a {
-    padding: 8px 11px;
-    border: 1px solid #7190a2;
+    padding: 9px 12px;
+    border: 1px solid #345875;
+    background: #163554;
     border-radius: 20px;
-    color: white;
+    color: #eaf3ff;
     text-decoration: none;
     white-space: nowrap;
     font-size: 12px;
+    font-weight: 600;
   }
-  main { padding: 12px; max-width: 680px; margin: auto; }
+
+  nav a:hover {
+    background: #20527e;
+    border-color: var(--orange);
+  }
+
+  nav a:focus-visible {
+    outline: 2px solid var(--orange);
+    outline-offset: 3px;
+  }
+
+  /* ITINERARY */
+
+  main {
+    padding: 16px 12px 35px;
+    max-width: 680px;
+    margin: auto;
+  }
+
   article {
-    background: white;
-    padding: 17px;
-    margin-bottom: 13px;
-    border-radius: 15px;
-    box-shadow: 0 2px 9px #0000000c;
-    scroll-margin-top: 140px;
+    background: linear-gradient(
+      145deg,
+      #162b45,
+      var(--panel)
+    );
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 19px;
+    margin-bottom: 15px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.22);
+    scroll-margin-top: 145px;
   }
+
   .date {
     font-size: 19px;
     font-weight: 800;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
+    color: var(--gold);
   }
-  .route { font-size: 14px; color: #405b6c; }
-  .driving { font-size: 12px; color: #647b89; margin-top: 7px; }
-  .activities { font-size: 14px; line-height: 1.55; }
+
+  .route {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #c2d8ee;
+  }
+
+  .route strong {
+    color: #ffffff;
+    font-size: 16px;
+  }
+
+  .driving {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 9px;
+  }
+
+  .activities {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e0ebf7;
+    margin: 14px 0;
+  }
+
+  /* HOTEL */
+
   .hotel {
-    padding: 12px 0;
-    border-top: 1px solid #e5eaee;
+    padding: 15px 0;
+    border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
   }
-  .hotel strong { font-size: 14px; }
-  .hotel small { display: block; color: #687d89; margin-top: 4px; }
+
+  .hotel > div {
+    min-width: 0;
+  }
+
+  .hotel strong {
+    display: block;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .hotel small {
+    display: block;
+    color: var(--muted);
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  /* GOOGLE MAPS BUTTONS */
+
   .go {
     display: inline-block;
-    background: #087e90;
-    color: white;
+    background: #087eae;
+    color: #ffffff;
+    border: 1px solid #249ed1;
     border-radius: 10px;
     padding: 12px 17px;
     text-decoration: none;
@@ -83,144 +213,162 @@
     min-width: 56px;
     text-align: center;
     white-space: nowrap;
+    transition: background .15s, transform .15s;
   }
-  .full {
+
+  .go:hover {
+    background: #109bcf;
+    transform: translateY(-1px);
+  }
+
+  .go:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+  }
+
+  .go.full {
     display: block;
-    margin: 10px 0;
-    background: #193c57;
+    margin: 12px 0;
+    background: linear-gradient(
+      120deg,
+      #b75c0c,
+      #e18416
+    );
+    border-color: var(--orange);
+    color: #ffffff;
+    padding: 15px;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(255,145,29,.12);
   }
+
+  .go.full:hover {
+    background: #ef931d;
+  }
+
+  /* SIGHTSEEING STOPS */
+
+  details {
+    margin-top: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 13px;
+  }
+
+  summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    padding: 4px 0;
+  }
+
+  summary:hover {
+    color: #ffd18a;
+  }
+
   .stop {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #edf0f2;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
     gap: 12px;
     font-size: 13px;
+    color: var(--text);
   }
+
+  .stop:last-child {
+    border-bottom: none;
+  }
+
+  /* TRAIN INFORMATION */
+
   .train {
-    background: #e8f5f7;
+    background: #193b4e;
+    border: 1px solid #28788a;
+    border-left: 4px solid var(--blue);
     border-radius: 10px;
-    padding: 12px;
+    padding: 14px;
+    color: #e1f6ff;
     font-size: 13px;
-    line-height: 1.5;
-    margin: 12px 0;
+    line-height: 1.6;
+    margin: 13px 0;
   }
-  details { margin-top: 12px; }
-  summary { cursor: pointer; font-size: 14px; font-weight: 700; }
-  footer { padding: 12px; color: #697d88; font-size: 12px; line-height: 1.6; }
 
-/* HEBERT Germany Trip - Dark Mode */
+  .train strong {
+    color: #ffffff;
+  }
 
-:root {
-  color-scheme: dark;
-}
+  /* FOOTER */
 
-body {
-  background: #091525;
-  color: #eaf3ff;
-}
+  footer {
+    padding: 16px 5px;
+    color: #95adc5;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+  }
 
-header {
-  background: #0b2340;
-  border-bottom: 2px solid #ff911d;
-}
+  /* MOBILE */
 
-header p {
-  color: #adc5df;
-}
+  @media(max-width: 520px) {
+    header {
+      padding: 17px 13px 13px;
+    }
 
-nav a {
-  background: #163554;
-  border-color: #345875;
-  color: #eaf3ff;
-}
+    header h1 {
+      font-size: 21px;
+    }
 
-nav a:hover {
-  background: #20527e;
-}
+    main {
+      padding: 12px 10px 30px;
+    }
 
-article {
-  background: #13243b;
-  color: #eaf3ff;
-  border: 1px solid #294360;
-  box-shadow: 0 5px 20px rgba(0,0,0,.25);
-}
+    article {
+      padding: 16px;
+      border-radius: 13px;
+      margin-bottom: 12px;
+    }
 
-.date {
-  color: #ffb347;
-}
+    .date {
+      font-size: 18px;
+    }
 
-.route {
-  color: #c2d8ee;
-}
+    .hotel {
+      gap: 10px;
+    }
 
-.driving {
-  color: #9eb4ca;
-}
+    .hotel strong {
+      font-size: 13px;
+    }
 
-.activities {
-  color: #e0ebf7;
-}
+    .hotel small {
+      font-size: 11px;
+    }
 
-.hotel {
-  border-top-color: #294360;
-}
+    .stop {
+      font-size: 12px;
+    }
 
-.hotel strong {
-  color: #ffffff;
-}
+    .go {
+      padding: 11px 13px;
+      min-width: 54px;
+    }
+  }
 
-.hotel small {
-  color: #a7bfd5;
-}
+  @media(prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
 
-.go {
-  background: #087eae;
-  color: #ffffff;
-  border: 1px solid #249ed1;
-}
-
-.go:hover {
-  background: #109bcf;
-}
-
-.go.full {
-  background: #bb6410;
-  border-color: #ff981e;
-  color: #ffffff;
-}
-
-.go.full:hover {
-  background: #df7b14;
-}
-
-.stop {
-  border-bottom-color: #294360;
-}
-
-.train {
-  background: #193b4e;
-  border: 1px solid #28788a;
-  color: #e1f6ff;
-}
-
-details {
-  color: #eaf3ff;
-}
-
-summary {
-  color: #ffb347;
-}
-
-footer {
-  color: #95adc5;
-}
-
+    .go {
+      transition: none;
+    }
+  }
 </style>
 </head>
 
 <body>
+
 <header>
   <h1>🎄 Germany Trip 2026</h1>
   <p>December 21–31 · Family Christmas Road Trip</p>
@@ -230,6 +378,7 @@ footer {
 <main id="itinerary"></main>
 
 <script>
+
 const hotels = {
   munich: {
     name: "Hampton Munich City Center East",
@@ -266,12 +415,14 @@ const hotels = {
 };
 
 // Google Maps destination lookup
+
 function map(place) {
   return "https://www.google.com/maps/search/?api=1&query="
     + encodeURIComponent(place);
 }
 
 // Google Maps driving route with intermediate stops
+
 function drive(stops) {
   const origin = stops[0];
   const destination = stops[stops.length - 1];
@@ -286,117 +437,203 @@ function drive(stops) {
     url += "&waypoints=" +
       waypoints.map(encodeURIComponent).join("%7C");
   }
+
   return url;
 }
 
 const days = [
+
   {
-    date: "Dec 21", day: "Monday",
+    date: "Dec 21",
+    day: "Monday",
     title: "Departure from Nashville",
-    from: "BNA", to: "Overnight flight",
-    activities: "Icelandair departure 5:30 PM. Connect through Keflavík (KEF).",
+    from: "BNA",
+    to: "Overnight flight",
+    activities:
+      "Icelandair departure 5:30 PM. Connect through Keflavík (KEF).",
     stops: []
   },
+
   {
-    date: "Dec 22", day: "Tuesday",
+    date: "Dec 22",
+    day: "Tuesday",
     title: "Arrive in Munich",
-    from: "Munich Airport", to: "Munich",
+    from: "Munich Airport",
+    to: "Munich",
     driving: "40 km / 25 mi · 40–60 min",
-    activities: "Arrive 12:05 PM. Pick up SIXT rental SUV. Explore the Christmas market at Marienplatz.",
+    activities:
+      "Arrive 12:05 PM. Pick up SIXT rental SUV. Explore the Christmas market at Marienplatz.",
     hotel: "munich",
     stops: [
-      ["Munich Marienplatz Christmas Market", "Marienplatz, Munich, Germany"]
+      [
+        "Munich Marienplatz Christmas Market",
+        "Marienplatz, Munich, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 23", day: "Wednesday",
+    date: "Dec 23",
+    day: "Wednesday",
     title: "Dachau and Nuremberg",
-    from: "Munich", to: "Nuremberg",
+    from: "Munich",
+    to: "Nuremberg",
     driving: "185 km / 115 mi · 2–3 hours",
-    activities: "Morning self-guided visit to Dachau Memorial (allow 3–4 hours). Continue to Nuremberg for the Christkindlesmarkt and dinner at Bratwursthäusle.",
+    activities:
+      "Morning self-guided visit to Dachau Memorial (allow 3–4 hours). Continue to Nuremberg for the Christkindlesmarkt and dinner at Bratwursthäusle.",
     hotel: "nuremberg",
     stops: [
-      ["Dachau Memorial", "Dachau Concentration Camp Memorial Site"],
-      ["Nuremberg Christmas Market", "Hauptmarkt, Nuremberg, Germany"],
-      ["Bratwursthäusle Restaurant", "Rathausplatz 1, Nuremberg, Germany"]
+      [
+        "Dachau Memorial",
+        "Dachau Concentration Camp Memorial Site"
+      ],
+      [
+        "Nuremberg Christmas Market",
+        "Hauptmarkt, Nuremberg, Germany"
+      ],
+      [
+        "Bratwursthäusle Restaurant",
+        "Rathausplatz 1, Nuremberg, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 24", day: "Thursday",
+    date: "Dec 24",
+    day: "Thursday",
     title: "Prague",
-    from: "Nuremberg", to: "Prague",
+    from: "Nuremberg",
+    to: "Prague",
     driving: "300 km / 186 mi · 3¼–4 hours",
-    activities: "Drive to Prague, check into Best Western Hotel Moran, then explore the historic Old Town on Christmas Eve.",
+    activities:
+      "Drive to Prague, check into Best Western Hotel Moran, then explore the historic Old Town on Christmas Eve.",
     hotel: "prague",
     stops: [
-      ["Prague Old Town Square", "Old Town Square, Prague, Czechia"]
+      [
+        "Prague Old Town Square",
+        "Old Town Square, Prague, Czechia"
+      ]
     ]
   },
+
   {
-    date: "Dec 25", day: "Friday",
+    date: "Dec 25",
+    day: "Friday",
     title: "Christmas Day in Prague",
-    from: "Prague", to: "Prague",
-    activities: "Christmas markets at Old Town Square and Wenceslas Square. Optional Charles Bridge sightseeing.",
+    from: "Prague",
+    to: "Prague",
+    activities:
+      "Christmas markets at Old Town Square and Wenceslas Square. Optional Charles Bridge sightseeing.",
     hotel: "prague",
     stops: [
-      ["Old Town Square", "Old Town Square, Prague, Czechia"],
-      ["Wenceslas Square", "Wenceslas Square, Prague, Czechia"],
-      ["Charles Bridge", "Charles Bridge, Prague, Czechia"]
+      [
+        "Old Town Square",
+        "Old Town Square, Prague, Czechia"
+      ],
+      [
+        "Wenceslas Square",
+        "Wenceslas Square, Prague, Czechia"
+      ],
+      [
+        "Charles Bridge",
+        "Charles Bridge, Prague, Czechia"
+      ]
     ]
   },
+
   {
-    date: "Dec 26", day: "Saturday",
+    date: "Dec 26",
+    day: "Saturday",
     title: "Rothenburg and Augsburg",
-    from: "Prague", to: "Augsburg",
-    activities: "Drive via Rothenburg ob der Tauber. Explore the medieval Old Town, then continue to your Augsburg hotel.",
+    from: "Prague",
+    to: "Augsburg",
+    activities:
+      "Drive via Rothenburg ob der Tauber. Explore the medieval Old Town, then continue to your Augsburg hotel.",
     hotel: "augsburg",
-    driving: "Long driving day · allow extra time for Rothenburg",
+    driving:
+      "Long driving day · allow extra time for Rothenburg",
     drivingRoute: [
       hotels.prague.address,
       "Rothenburg ob der Tauber, Germany",
       hotels.augsburg.address
     ],
     stops: [
-      ["Rothenburg Old Town", "Marktplatz, Rothenburg ob der Tauber, Germany"]
+      [
+        "Rothenburg Old Town",
+        "Marktplatz, Rothenburg ob der Tauber, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 27", day: "Sunday",
+    date: "Dec 27",
+    day: "Sunday",
     title: "Romantic Road and Füssen",
-    from: "Augsburg", to: "Füssen",
-    activities: "Romantic Road sightseeing, with possible stops at Dinkelsbühl or Nördlingen. Continue toward Füssen and the Neuschwanstein Castle area.",
+    from: "Augsburg",
+    to: "Füssen",
+    activities:
+      "Romantic Road sightseeing, with possible stops at Dinkelsbühl or Nördlingen. Continue toward Füssen and the Neuschwanstein Castle area.",
     hotel: "fussen",
-    driving: "Scenic driving · time depends on selected stops",
+    driving:
+      "Scenic driving · time depends on selected stops",
     stops: [
-      ["Dinkelsbühl", "Dinkelsbühl, Germany"],
-      ["Nördlingen", "Nördlingen, Germany"],
-      ["Neuschwanstein Castle", "Neuschwanstein Castle, Schwangau, Germany"]
+      [
+        "Dinkelsbühl",
+        "Dinkelsbühl, Germany"
+      ],
+      [
+        "Nördlingen",
+        "Nördlingen, Germany"
+      ],
+      [
+        "Neuschwanstein Castle",
+        "Neuschwanstein Castle, Schwangau, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 28", day: "Monday",
+    date: "Dec 28",
+    day: "Monday",
     title: "Alpine Train and Telfs",
-    from: "Füssen", to: "Innsbruck → Telfs",
-    activities: "Drive to Innsbruck Hauptbahnhof for your booked Alpine train ride via Seefeld to Mittenwald and back. After the train excursion, drive to Telfs.",
+    from: "Füssen",
+    to: "Innsbruck → Telfs",
+    activities:
+      "Drive to Innsbruck Hauptbahnhof for your booked Alpine train ride via Seefeld to Mittenwald and back. After the train excursion, drive to Telfs.",
     hotel: "telfs",
-    train: "Outbound train: Innsbruck 10:38 AM → Mittenwald 11:35 AM. Confirm return time using your ticket.",
+    train:
+      "Outbound train: Innsbruck 10:38 AM → Mittenwald 11:35 AM. Confirm return time using your ticket.",
     drivingRoute: [
       hotels.fussen.address,
       "Innsbruck Hauptbahnhof, Austria"
     ],
     stops: [
-      ["Innsbruck Train Station", "Innsbruck Hauptbahnhof, Austria"],
-      ["Station Parking Garage", "Bahnhof Parkgarage, Südtiroler Platz, Innsbruck, Austria"],
-      ["Mittenwald", "Mittenwald, Germany"]
+      [
+        "Innsbruck Train Station",
+        "Innsbruck Hauptbahnhof, Austria"
+      ],
+      [
+        "Station Parking Garage",
+        "Bahnhof Parkgarage, Südtiroler Platz, Innsbruck, Austria"
+      ],
+      [
+        "Mittenwald",
+        "Mittenwald, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 29", day: "Tuesday",
+    date: "Dec 29",
+    day: "Tuesday",
     title: "Swiss Alps and Colmar",
-    from: "Telfs", to: "Freiburg",
-    activities: "Scenic driving through Switzerland via Lucerne. Visit Colmar's Christmas market in France, then continue to your hotel in Freiburg.",
+    from: "Telfs",
+    to: "Freiburg",
+    activities:
+      "Scenic driving through Switzerland via Lucerne. Visit Colmar's Christmas market in France, then continue to your hotel in Freiburg.",
     hotel: "freiburg",
-    driving: "Long scenic driving day · approximately 7–9 hours",
+    driving:
+      "Long scenic driving day · approximately 7–9 hours",
     drivingRoute: [
       hotels.telfs.address,
       "Lucerne, Switzerland",
@@ -404,17 +641,28 @@ const days = [
       hotels.freiburg.address
     ],
     stops: [
-      ["Lucerne", "Lucerne, Switzerland"],
-      ["Colmar Christmas Market", "Place des Dominicains, Colmar, France"]
+      [
+        "Lucerne",
+        "Lucerne, Switzerland"
+      ],
+      [
+        "Colmar Christmas Market",
+        "Place des Dominicains, Colmar, France"
+      ]
     ]
   },
+
   {
-    date: "Dec 30", day: "Wednesday",
+    date: "Dec 30",
+    day: "Wednesday",
     title: "Black Forest to Munich",
-    from: "Freiburg", to: "Munich Airport area",
-    activities: "Scenic Black Forest drive with stops at Titisee and Triberg. Continue to your final overnight hotel in Hallbergmoos.",
+    from: "Freiburg",
+    to: "Munich Airport area",
+    activities:
+      "Scenic Black Forest drive with stops at Titisee and Triberg. Continue to your final overnight hotel in Hallbergmoos.",
     hotel: "airport",
-    driving: "Scenic detour · allow most of the day",
+    driving:
+      "Scenic detour · allow most of the day",
     drivingRoute: [
       hotels.freiburg.address,
       "Titisee-Neustadt, Germany",
@@ -422,30 +670,54 @@ const days = [
       hotels.airport.address
     ],
     stops: [
-      ["Titisee Lake", "Titisee, Titisee-Neustadt, Germany"],
-      ["Triberg", "Triberg im Schwarzwald, Germany"]
+      [
+        "Titisee Lake",
+        "Titisee, Titisee-Neustadt, Germany"
+      ],
+      [
+        "Triberg",
+        "Triberg im Schwarzwald, Germany"
+      ]
     ]
   },
+
   {
-    date: "Dec 31", day: "Thursday",
+    date: "Dec 31",
+    day: "Thursday",
     title: "Return Home",
-    from: "Munich", to: "Nashville",
-    activities: "Drive to Munich Airport and return the SIXT SUV. Flight departs MUC at 1:00 PM. Arrive BNA at 6:45 PM.",
+    from: "Munich",
+    to: "Nashville",
+    activities:
+      "Drive to Munich Airport and return the SIXT SUV. Flight departs MUC at 1:00 PM. Arrive BNA at 6:45 PM.",
     stops: [
-      ["SIXT Rental Return", "SIXT Car Return, Munich Airport P6, Germany"],
-      ["Munich Airport", "Munich Airport, Germany"]
+      [
+        "SIXT Rental Return",
+        "SIXT Car Return, Munich Airport P6, Germany"
+      ],
+      [
+        "Munich Airport",
+        "Munich Airport, Germany"
+      ]
     ]
   }
+
 ];
+
+// Create Google Maps buttons
 
 function goButton(label, url, full = false) {
   return `<a class="go ${full ? "full" : ""}"
-    href="${url}" target="_blank" rel="noopener">
+    href="${url}"
+    target="_blank"
+    rel="noopener noreferrer">
     ${label}
   </a>`;
 }
 
+// Render itinerary
+
 function render() {
+
   document.getElementById("navigation").innerHTML =
     days.map((d, i) =>
       `<a href="#day${i}">${d.date}</a>`
@@ -453,18 +725,43 @@ function render() {
 
   document.getElementById("itinerary").innerHTML =
     days.map((d, i) => {
+
       let content = `
         <article id="day${i}">
-          <div class="date">${d.date} · ${d.day}</div>
-          <div class="route"><strong>${d.title}</strong></div>
-          <div class="route">${d.from} → ${d.to}</div>
-          ${d.driving ? `<div class="driving">🚗 ${d.driving}</div>` : ""}
-          <p class="activities">${d.activities}</p>
-        `;
+          <div class="date">
+            ${d.date} · ${d.day}
+          </div>
+
+          <div class="route">
+            <strong>${d.title}</strong>
+          </div>
+
+          <div class="route">
+            ${d.from} → ${d.to}
+          </div>
+
+          ${d.driving
+            ? `<div class="driving">🚗 ${d.driving}</div>`
+            : ""}
+
+          <p class="activities">
+            ${d.activities}
+          </p>
+      `;
+
+      // Train information
 
       if (d.train) {
-        content += `<div class="train">🚆 <strong>Train excursion</strong><br>${d.train}</div>`;
+        content += `
+          <div class="train">
+            🚆 <strong>Train excursion</strong>
+            <br>
+            ${d.train}
+          </div>
+        `;
       }
+
+      // Scenic driving route
 
       if (d.drivingRoute) {
         content += goButton(
@@ -476,26 +773,36 @@ function render() {
         );
       }
 
+      // Hotel information
+
       if (d.hotel) {
         const hotel = hotels[d.hotel];
+
         content += `
           <div class="hotel">
             <div>
               <strong>🏨 ${hotel.name}</strong>
               <small>${hotel.address}</small>
             </div>
+
             ${goButton("GO", map(hotel.address))}
           </div>
         `;
       }
 
+      // Sightseeing navigation
+
       if (d.stops && d.stops.length) {
+
         content += `
           <details>
-            <summary>📍 Sightseeing Stops & Navigation</summary>
+            <summary>
+              📍 Sightseeing Stops & Navigation
+            </summary>
         `;
 
         d.stops.forEach(stop => {
+
           content += `
             <div class="stop">
               <span>${stop[0]}</span>
@@ -508,12 +815,15 @@ function render() {
       }
 
       content += `</article>`;
+
       return content;
+
     }).join("");
 
   document.getElementById("itinerary").innerHTML += `
     <footer>
-      Driving times are estimates. Check winter road conditions,
+      Driving times are estimates.
+      Check winter road conditions,
       attraction hours, and your train ticket.
       Google Maps GO buttons require an internet connection.
     </footer>
@@ -521,6 +831,7 @@ function render() {
 }
 
 render();
+
 </script>
 </body>
 </html>
